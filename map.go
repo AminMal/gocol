@@ -26,6 +26,14 @@ func FlatMap[F any, T any](original []F, flatMapFunc func(F) []T) []T {
 	return res
 }
 
-func Bind[F any, T any](original []F, bind func(F) []T) []T {
-	return FlatMap(original, bind)
+func DistinctUnordered[T comparable](original []T) []T {
+	unique := make(map[T]struct{})
+	for i := range original {
+		unique[original[i]] = struct{}{}
+	}
+	result := []T{}
+	for k := range unique {
+		result = append(result, k)
+	}
+	return result
 }
