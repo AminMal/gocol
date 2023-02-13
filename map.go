@@ -1,9 +1,11 @@
 package gocol
 
-func Map[F any, T any](original []F, mapFunc func(F)T) []T {
-	if original == nil { return nil }
+func Map[F any, T any](original []F, mapFunc func(F) T) []T {
+	if original == nil {
+		return nil
+	}
 	length := len(original)
-	res := make([]T, length, length)
+	res := make([]T, length)
 	for i, f := range original {
 		res[i] = mapFunc(f)
 	}
@@ -25,6 +27,5 @@ func FlatMap[F any, T any](original []F, flatMapFunc func(F) []T) []T {
 }
 
 func Bind[F any, T any](original []F, bind func(F) []T) []T {
-	return FlatMap[F, T](original, bind)
+	return FlatMap(original, bind)
 }
-
