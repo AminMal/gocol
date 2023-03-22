@@ -1,9 +1,5 @@
 package gocol
 
-func Add[T Numeric]() func(T, T) T {
-	return func(a, b T) T { return a + b }
-}
-
 func First[T any]() func(T, T) T {
 	return func(head, _ T) T { return head }
 }
@@ -34,8 +30,10 @@ func GroupMap[T any, V any, K comparable](original []T, groupKey func(T) K, mapF
 	return res
 }
 
-func GroupMapReduce[T any, V any, K comparable](original []T, groupKey func(T) K, mapFunc func(T) V, reduce func (V, V) V) map[K]V {
-	if original == nil { return nil }
+func GroupMapReduce[T any, V any, K comparable](original []T, groupKey func(T) K, mapFunc func(T) V, reduce func(V, V) V) map[K]V {
+	if original == nil {
+		return nil
+	}
 	res := make(map[K]V)
 
 	for i := range original {

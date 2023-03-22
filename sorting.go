@@ -4,11 +4,20 @@ import (
 	"sort"
 )
 
+func cpy[T any](src []T) []T {
+	result := []T{}
+	for _, t := range src {
+		result = append(result, t)
+	}
+	return result
+}
+
 func Sorted[T any](ts []T, o Ordering[T]) []T {
-	sort.Slice(ts, func(i, j int) bool {
-		return o.Compare(ts[i], ts[j]) < 0
+	clone := cpy(ts)
+	sort.Slice(clone, func(i, j int) bool {
+		return o.Compare(clone[i], clone[j]) < 0
 	})
-	return ts
+	return clone
 }
 
 func SortInPlace[T any](ts []T, o Ordering[T]) {

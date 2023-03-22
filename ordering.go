@@ -16,22 +16,26 @@ func (g genericOrdering[T]) Compare(one, another T) int { return g.compareFunc(o
 
 // ------- Ordering composition -------
 type using[T any, V any] struct {
-	original Ordering[T]
-	convertFunc func(V)T
+	original    Ordering[T]
+	convertFunc func(V) T
 }
 
 func (u using[T, V]) Compare(a, b V) int {
 	return u.original.Compare(u.convertFunc(a), u.convertFunc(b))
 }
 
-func OrderingBasedOn[T any, V any](original Ordering[T], convert func(V)T) Ordering[V] {
+func OrderingBasedOn[T any, V any](original Ordering[T], convert func(V) T) Ordering[V] {
 	return using[T, V]{original, convert}
 }
 
 func NumericAsc[T Numeric]() Ordering[T] {
 	compare := func(a, b T) int {
-		if a < b { return -1 }
-		if a == b { return 0 }
+		if a < b {
+			return -1
+		}
+		if a == b {
+			return 0
+		}
 		return 1
 	}
 	return genericOrdering[T]{compare}
@@ -39,8 +43,12 @@ func NumericAsc[T Numeric]() Ordering[T] {
 
 func NumericDesc[T Numeric]() Ordering[T] {
 	compare := func(a, b T) int {
-		if a < b { return 1 }
-		if a == b { return 0 }
+		if a < b {
+			return 1
+		}
+		if a == b {
+			return 0
+		}
 		return -1
 	}
 	return genericOrdering[T]{compare}
@@ -67,16 +75,24 @@ var Float64Desc Ordering[float64] = NumericDesc[float64]()
 // ------- Date&Time Orderings -------
 var TimeAsc Ordering[time.Time] = genericOrdering[time.Time]{
 	compareFunc: func(a, b time.Time) int {
-		if a.Before(b) { return -1 }
-		if a.After(b) { return 1 }
+		if a.Before(b) {
+			return -1
+		}
+		if a.After(b) {
+			return 1
+		}
 		return 0
 	},
 }
 
 var TimeDesc Ordering[time.Time] = genericOrdering[time.Time]{
 	compareFunc: func(a, b time.Time) int {
-		if a.After(b) { return -1 }
-		if a.Before(b) { return 1 }
+		if a.After(b) {
+			return -1
+		}
+		if a.Before(b) {
+			return 1
+		}
 		return 0
 	},
 }
