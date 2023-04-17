@@ -37,3 +37,15 @@ func DistinctUnordered[T comparable](original []T) []T {
 	}
 	return result
 }
+
+func Forall[T any](original[]T, predicate func(T) bool) bool {
+    if original == nil { return false }
+    predicateHolds := true
+    for _, value := range original {
+        if !predicate(value) {
+            predicateHolds = false
+            break
+        }
+    }
+    return predicateHolds
+}
